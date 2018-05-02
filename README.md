@@ -2,9 +2,33 @@
 
 ![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
 
-As Javascript developers who've accepted with open arms the addition of `async/await` and **TypeScript** our lives have gotten so much better but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
+For Javascript developers who've accepted with open arms the addition of `async/await` and **TypeScript**, our lives have gotten _so much better_ but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
 
 This is an attempt at that.
+
+Maybe you think you don't need this help. Maybe you don't. But let's be honest, the `async/await` semantics are great when we're doing one thing after another ... not quite as good we're doing things in parallel one after another. Yes you can do:
+
+```js
+await Promise.all([thing1, thing2, thing3]);
+await Promise.all([anotherThing1, anotherThing2]);
+```
+
+What about the looping trap too? What trap? When you are looping around anything and one of the steps within the loop is _asynchronous_:
+
+```js
+things.maps(async thing => await process(thing));
+doSomethingElse();
+```
+
+Without really intending to i've fired off a set of parallel executions and then immediately executed `doSomethingElse`. Probably not what you wanted. What if I could instead:
+
+```js
+things.maps(thing => inParallel.add(process(thing)));
+await inParallel.done();
+doSomethingElse();
+```
+
+Yeah well that's what I've been saying all along. You need this. Treat yourself. Show yourself that you really do care. Or don't. Up to you.
 
 ## Installation
 
