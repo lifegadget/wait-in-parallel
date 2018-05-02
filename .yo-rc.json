@@ -1,0 +1,20 @@
+{
+  "generator-typescript-microservice": {
+    "promptValues": {
+      "appName": "wait-in-parallel",
+      "repo": "wait-in-parallel",
+      "gitServer": "github",
+      "repoUserName": "lifegadget",
+      "serverless": "library-function",
+      "features": [
+        "wallaby",
+        "npm"
+      ],
+      "license": "MIT",
+      "coverage": [
+        "coveralls"
+      ],
+      "social": []
+    }
+  }
+}
