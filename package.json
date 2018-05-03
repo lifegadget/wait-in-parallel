@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": ["serverless", "typescript"],
+  "keywords": ["async/await", "typescript"],
   "files": ["lib", "esm"],
   "main": "lib/index.js",
   "module": "esm/index.js",
