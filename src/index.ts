@@ -1,6 +1,6 @@
 import { IDictionary } from "common-types";
 import ParallelError from "./ParallelError";
-import timeout from "./Timeout";
+import timeout from "./timeout";
 
 function isDelayedPromise(test: any) {
   return typeof test === "function" ? true : false;

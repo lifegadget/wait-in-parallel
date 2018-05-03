@@ -32,6 +32,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/handlebars@^4.0.37":
+  version "4.0.37"
+  resolved "https://registry.yarnpkg.com/@types/handlebars/-/handlebars-4.0.37.tgz#a3bc3eba0c0f03f753cac00841a5b21e26a02c03"
+
 "@types/js-yaml@^3.11.1":
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.11.1.tgz#ac5bab26be5f9c6f74b6b23420f2cfa5a7a6ba40"
