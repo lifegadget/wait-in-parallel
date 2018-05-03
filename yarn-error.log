@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn run clear
+  /usr/local/bin/node /usr/local/bin/yarn run test all
 
 PATH: 
   /usr/local/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin
@@ -37,6 +37,7 @@ npm manifest:
       "lint": "tslint --force --format verbose \"src/**/*.ts\"",
       "build": "./node_modules/.bin/ts-node ./scripts/build.ts",
       "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
+      "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
       "test": "./node_modules/.bin/ts-node ./scripts/test.ts ",
       "invoke": "./node_modules/.bin/ts-node ./scripts/invoke.ts ",
       "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
@@ -46,8 +47,7 @@ npm manifest:
       "watch": "ts-node ./scripts/watch.ts",
       "watch:test": "ts-node ./scripts/watch.ts test",
       "watch:all": "ts-node ./scripts/watch.ts all",
-      "cli": "ts-node cli/index.ts --",
-      "clear": "./node_modules/.bin/ts-node ./scripts/clear.ts"
+      "cli": "ts-node cli/index.ts --"
     },
     "devDependencies": {
       "@types/aws-sdk": "^2.7.0",
@@ -72,6 +72,7 @@ npm manifest:
       "nyc": "^11.7.1",
       "prettier": "^1.12.1",
       "rimraf": "^2.6.2",
+      "simple-git": "^1.92.0",
       "test-console": "^1.1.0",
       "ts-node": "^6.0.2",
       "tslint": "^5.9.1",
@@ -2177,6 +2178,12 @@ Lockfile:
     version "3.0.2"
     resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   
+  simple-git@^1.92.0:
+    version "1.92.0"
+    resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.92.0.tgz#6061468eb7d19f0141078fc742e62457e910f547"
+    dependencies:
+      debug "^3.1.0"
+  
   slide@^1.1.5:
     version "1.1.6"
     resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
@@ -2677,9 +2684,9 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 127
+  Exit code: 1
   Command: sh
-  Arguments: -c ./node_modules/.bin/ts-node ./scripts/clear.ts
+  Arguments: -c ./node_modules/.bin/ts-node ./scripts/test.ts  all
   Directory: /Users/ken/mine/oss/wait-in-parallel
   Output:
   

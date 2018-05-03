@@ -6,14 +6,14 @@ For Javascript developers who've accepted with open arms the addition of `async/
 
 This is an attempt at that.
 
-Maybe you think you don't need this help. Maybe you don't. But let's be honest, the `async/await` semantics are great when we're doing one thing after another ... not quite as good we're doing things in parallel one after another. Yes you can do:
+Maybe you think you don't need this help. Maybe you don't. But let's be honest, the `async/await` semantics are great when we're doing one thing after another ... not quite as good we're doing things in parallel. Yes you can do:
 
 ```js
 await Promise.all([thing1, thing2, thing3]);
 await Promise.all([anotherThing1, anotherThing2]);
 ```
 
-What about the looping trap too? What trap? When you are looping around anything and one of the steps within the loop is _asynchronous_:
+What about the looping trap? Eh, what trap? I gave it a name to make it sound more formal and scary. Basically what I mean is when you are looping around anything and one of the steps within the loop is _asynchronous_:
 
 ```js
 things.maps(async thing => await process(thing));
@@ -24,11 +24,11 @@ Without really intending to i've fired off a set of parallel executions and then
 
 ```js
 things.maps(thing => inParallel.add(process(thing)));
-await inParallel.done();
+await inParallel.isDone();
 doSomethingElse();
 ```
 
-Yeah well that's what I've been saying all along. You need this. Treat yourself. Show yourself that you really do care. Or don't. Up to you.
+Yeah well that's what I've been saying all along. You need this. Treat yourself. Show yourself that you really _do_ care. Or don't; up to you.
 
 ## Installation
 
@@ -121,7 +121,7 @@ It may be that you do really want to wait for all the promises to complete but y
 ```ts
 try {
   const fn: IParallelFailureNotification = (which: string, error: Error) => {
-    console.log(`The ${which} promised failed with error: ${error.message}`);
+    console.log(`The ${which} promise failed with error: ${error.message}`);
   };
   const result = await Parallel.create()
     .add("red", addThing("red"))
@@ -136,14 +136,13 @@ try {
 
 #### Slow ... but I don't have ALL DAY
 
-There are often cases where you need/want to wait for completion of all promises to complete but only to a point. In essence you want a "timeout" to fire on any of the promises if they're go beyond a certain timeframe. Well clearly you can just add this _timeout_ functionality to your promises but to make this functionality easier to implement we have a named export called `{ timeout }` that you can use:
+There are often cases where you need/want to wait for completion of all promises to complete but only to a point. In essence you want a "timeout" to fire on any of the promises if they're go beyond a certain timeframe. Well clearly you can just add this _timeout_ functionality to your promises but to make this functionality easier to implement there is an optional third parameter to the `.add()` method:
 
 ```ts
 try {
-  import Parallel, { timeout } from "wait-in-parallel";
   const result = await Parallel.create()
-    .add("red", timeout(addThing("red"), 5000))
-    .add("blue", timeout(addThing("blue"), 2000))
+    .add("red", addThing("red"), 5000))   // timeout of 5 seconds
+    .add("blue", addThing("blue"), 2000)) // timeout of 2 seconds
     .isDone();
   // success
 } catch (e) {
@@ -160,7 +159,37 @@ Anyway, let me spell it out:
 * add the `failFast()` call
 * surround one or more of you promises with `timeout(promise, delay)`
 
-# License
+### Delayed Start
+
+In the cases demonstrated so far every addition (aka, call to `add`) has passed in a promise which is executing. In this always-hurring world, right away makes sense most of the time but occationally it might make sense to delay execution of the promises. This can be done by passing in a synchronous function which resolves to an asynchronous function:
+
+```ts
+const delayedPromise = () => async () => Promise.resolve();
+```
+
+This allows you to allows you to load up a number of parallel execution groups but they don't start executing until the call to `.isDone()` is called:
+
+```ts
+import Parallel, { delayed } from "wait-in-parallel";
+
+const group1 = Parallel.create()
+  .add(delayed(() => job1))
+  .add(delayed(() => job2));
+const group2 = Parallel.create()
+  .add(delayed(() => job3))
+  .add(delayed(() => job4));
+
+setTimeout(console.log(await group2.isDone()), 500);
+```
+
+In the above example, nothing is executed for 500ms, then **group2** is kicked off and when it completes it logs to the console. `job1` and `job2` are never executed as **group1** is still delayed ... awaiting the start signal.
+
+## Other Notes
+
+* this library is available in both `commonjs` and `es2015` module definitions
+* you don't _need_ to use TypeScript, I just think you _should_
+
+## License
 
 Copyright (c) 2018 LifeGadget Ltd
 

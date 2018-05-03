@@ -2,23 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "All Mocha Tests",
-      "type": "node",
-      "request": "launch",
-      "stopOnEntry": false,
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "protocol": "inspector",
-      "cwd": "${workspaceRoot}",
-      "args": [
-        "--no-timeouts",
-        "--compilers",
-        "ts:ts-node/register",
-        "${workspaceRoot}/test/**/*-spec.ts"
-      ],
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "name": "Current TS Test File",
+      "name": "Current Mocha Test File (TS)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/_mocha",
