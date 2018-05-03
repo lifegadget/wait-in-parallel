@@ -21,7 +21,7 @@ export default class ParallelError<T = any> extends Error {
     super();
     const successful = context.get("successful");
     const failed = context.get("failed");
-    const errors = context.get("errors");
+    const errors: IDictionary<Error> = context.get("errors");
     const results = context.get("results");
     const registrations = context.get("registrations");
 

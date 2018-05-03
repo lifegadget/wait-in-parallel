@@ -54,7 +54,7 @@ export default class Parallel {
     if (!validGets.has(prop)) {
       throw new Error(`"${prop}" is not a valid property to get.`);
     }
-    return this[`_${prop}`];
+    return this[`_${prop}` as keyof this] as any;
   }
 
   public add<T = any>(name: string, promise: ParallelTask<T>, timeout?: number) {

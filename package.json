@@ -1,18 +1,12 @@
 {
   "name": "wait-in-parallel",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.1",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": [
-    "serverless",
-    "typescript"
-  ],
-  "files": [
-    "lib",
-    "esm"
-  ],
+  "keywords": ["serverless", "typescript"],
+  "files": ["lib", "esm"],
   "main": "lib/index.js",
   "module": "esm/index.js",
   "typings": "lib/index.d.ts",
@@ -27,7 +21,8 @@
     "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
     "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
-    "coverage": "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
+    "coverage":
+      "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
     "watch": "ts-node ./scripts/watch.ts",
     "watch:test": "ts-node ./scripts/watch.ts test",
     "watch:all": "ts-node ./scripts/watch.ts all",

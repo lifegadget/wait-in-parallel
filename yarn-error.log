@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn run test all
+  /usr/local/bin/node /usr/local/bin/yarn run build
 
 PATH: 
   /usr/local/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin
@@ -16,19 +16,13 @@ Platform:
 npm manifest: 
   {
     "name": "wait-in-parallel",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "wait-in-parallel",
     "license": "MIT",
     "repository": "https://your-server.com/lifegadget/wait-in-parallel",
     "author": "Ken Snyder <ken@ken.net>",
-    "keywords": [
-      "serverless",
-      "typescript"
-    ],
-    "files": [
-      "lib",
-      "esm"
-    ],
+    "keywords": ["serverless", "typescript"],
+    "files": ["lib", "esm"],
     "main": "lib/index.js",
     "module": "esm/index.js",
     "typings": "lib/index.d.ts",
@@ -43,7 +37,8 @@ npm manifest:
       "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
       "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
       "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
-      "coverage": "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
+      "coverage":
+        "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
       "watch": "ts-node ./scripts/watch.ts",
       "watch:test": "ts-node ./scripts/watch.ts test",
       "watch:all": "ts-node ./scripts/watch.ts all",
@@ -2686,7 +2681,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c ./node_modules/.bin/ts-node ./scripts/test.ts  all
+  Arguments: -c ./node_modules/.bin/ts-node ./scripts/build.ts
   Directory: /Users/ken/mine/oss/wait-in-parallel
   Output:
   
