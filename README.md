@@ -150,15 +150,6 @@ try {
 }
 ```
 
-#### Mr Speedy Pants
-
-When writing the above use case above I also realized an equally beneficial use case is using timeouts when you fail fast. No need for a code example on this one, I presume it's obvious how you'd do that. If it's not obvious to you it doesn't mean you are slow ... it just means you _might_ be. 😉
-
-Anyway, let me spell it out:
-
-* add the `failFast()` call
-* surround one or more of you promises with `timeout(promise, delay)`
-
 ### Delayed Start
 
 In the cases demonstrated so far every addition (aka, call to `add`) has passed in a promise which is executing. In this always-hurring world, "right away" makes sense a lot of the time but occationally it might make sense to delay execution of the promises. This can be done by passing in a function which returns a promise:
