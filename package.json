@@ -6,7 +6,7 @@
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
   "author": "Ken Snyder <ken@ken.net>",
   "keywords": ["async/await", "typescript"],
-  "files": ["lib", "esm", "scripts"],
+  "files": ["lib", "esm"],
   "main": "lib/index.js",
   "module": "esm/index.js",
   "typings": "lib/index.d.ts",
