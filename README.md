@@ -2,7 +2,7 @@
 
 ![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
 
-For Javascript developers who've accepted with open arms the addition of `async/await` and **TypeScript**, our lives have gotten _so much better_ but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
+For Javascript developers who have accepted `async/await` and **TypeScript** into our hearts, our lives have gotten _so much better_ but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
 
 This is an attempt at that.
 
@@ -28,7 +28,7 @@ await inParallel.isDone();
 doSomethingElse();
 ```
 
-Yeah well that's what I've been saying all along. You need this. Treat yourself. Show yourself that you really _do_ care. Or don't; up to you.
+Yeah well that's what I've been saying all along. You need this. Treat yourself. Show yourself that you really _do_ care.
 
 ## Installation
 
@@ -180,7 +180,7 @@ In the above example, nothing is executed for 500ms, then **group2** is kicked o
 
 ## Other Notes
 
-* this library is available in both `commonjs` and `es2015` module definitions
+* this library is available in `commonjs`, `es2015`, and `umd` module definitions
 * you don't _need_ to use TypeScript, I just think you _should_
 
 ## License
