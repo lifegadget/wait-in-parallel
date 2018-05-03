@@ -161,10 +161,13 @@ Anyway, let me spell it out:
 
 ### Delayed Start
 
-In the cases demonstrated so far every addition (aka, call to `add`) has passed in a promise which is executing. In this always-hurring world, right away makes sense most of the time but occationally it might make sense to delay execution of the promises. This can be done by passing in a synchronous function which resolves to an asynchronous function:
+In the cases demonstrated so far every addition (aka, call to `add`) has passed in a promise which is executing. In this always-hurring world, "right away" makes sense a lot of the time but occationally it might make sense to delay execution of the promises. This can be done by passing in a function which returns a promise:
 
 ```ts
-const delayedPromise = () => async () => Promise.resolve();
+// using an async function
+const aFn = async () => "an async function";
+// an old fashioned promise
+const p = () => Promise.resolve("I'm a promise");
 ```
 
 This allows you to allows you to load up a number of parallel execution groups but they don't start executing until the call to `.isDone()` is called:
@@ -173,11 +176,11 @@ This allows you to allows you to load up a number of parallel execution groups b
 import Parallel, { delayed } from "wait-in-parallel";
 
 const group1 = Parallel.create()
-  .add(delayed(() => job1))
-  .add(delayed(() => job2));
+  .add(() => job1)
+  .add(() => job2);
 const group2 = Parallel.create()
-  .add(delayed(() => job3))
-  .add(delayed(() => job4));
+  .add(() => job3)
+  .add(() => job4);
 
 setTimeout(console.log(await group2.isDone()), 500);
 ```

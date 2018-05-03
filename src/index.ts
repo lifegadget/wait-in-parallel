@@ -1,5 +1,6 @@
 import { IDictionary } from "common-types";
 import ParallelError from "./ParallelError";
+import timeout from "./Timeout";
 
 function isDelayedPromise(test: any) {
   return typeof test === "function" ? true : false;
@@ -149,8 +150,9 @@ export default class Parallel {
     if (isDelayedPromise(promise)) {
       this._registrations[name].deferred = promise;
     } else {
+      const duration = options.timeout || 0;
       this._tasks.push(
-        (promise as Promise<T>)
+        timeout(promise as Promise<T>, duration)
           .then(result => this.handleSuccess<T>(name, result as T))
           .catch((err: Error) => this.handleFailure<T>(name, err))
       );
@@ -174,10 +176,10 @@ export default class Parallel {
     Object.keys(this._registrations).map(name => {
       const registration = this._registrations[name];
       if (registration.deferred) {
+        const duration = registration.timeout || 0;
         try {
           this._tasks.push(
-            registration
-              .deferred()
+            timeout(registration.deferred(), duration)
               .then((result: any) => this.handleSuccess(name, result))
               .catch((err: Error) => this.handleFailure(name, err))
           );
