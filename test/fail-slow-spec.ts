@@ -6,15 +6,15 @@ import ParallelError from "../src/ParallelError";
 
 const expect = chai.expect;
 const s1 = async () => {
-  wait(100);
+  await wait(50);
   return 1;
 };
 const s2 = async () => {
-  wait(200);
+  await wait(100);
   return 2;
 };
 const f1 = async () => {
-  wait(10);
+  await wait(10);
   throw new Error("whoops");
 };
 
@@ -48,8 +48,6 @@ describe("Fail Slow → ", () => {
         .isDone();
       throw new Error("should not have reached here!");
     } catch (e) {
-      console.log(e);
-
       expect(e.name).to.equal("ParallelError");
       expect((e as ParallelError).failed).to.include("f1");
       expect((e as ParallelError).successful).to.include("s1");

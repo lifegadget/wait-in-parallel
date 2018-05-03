@@ -1,4 +1,5 @@
 import { IDictionary } from "common-types";
+import Parallel from ".";
 
 export default class ParallelError<T = any> extends Error {
   name = "ParallelError";
@@ -15,4 +16,28 @@ export default class ParallelError<T = any> extends Error {
   public errors: IDictionary<Error>;
   /** a dictionary of successful results that were achieved */
   public results: IDictionary<T>;
+
+  constructor(context: Parallel) {
+    super();
+    const successful = context.get("successful");
+    const failed = context.get("failed");
+    const errors = context.get("errors");
+    const results = context.get("results");
+    const registrations = context.get("registrations");
+
+    this.name = "ParallelError";
+    this.message = `${context.get("failed").length} of ${failed.length +
+      successful.length} parallel tasks failed. Tasks failing were: ${failed.join(
+      ", "
+    )}.`;
+    this.errors = errors;
+    this.failed = failed;
+    this.successful = successful;
+    this.results = results;
+    if (context.failFast) {
+      const complete = new Set([...successful, ...failed]);
+      const incomplete = Object.keys(registrations).filter(k => !complete.has(k));
+      this.incomplete = incomplete;
+    }
+  }
 }

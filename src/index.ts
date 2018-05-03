@@ -40,18 +40,21 @@ export default class Parallel {
     }
   }
 
-  // public addCallback<T = any>(name: string, options = {}) {
-  //   const cb = (err: any, data: T) => {
-  //     if (err) {
-  //       this.handleFailure<T>(name, err);
-  //     } else {
-  //       this.handleSuccess<T>(name, data);
-  //     }
-  //   };
-  //   this.register(name, options);
-
-  //   return Promise.resolve(cb);
-  // }
+  /** a utility method to get certain private properties in the class */
+  public get(prop: string) {
+    const validGets = new Set([
+      "failed",
+      "successful",
+      "errors",
+      "results",
+      "failFast",
+      "registrations"
+    ]);
+    if (!validGets.has(prop)) {
+      throw new Error(`"${prop}" is not a valid property to get.`);
+    }
+    return this[`_${prop}`];
+  }
 
   public add<T = any>(name: string, promise: ParallelTask<T>, timeout?: number) {
     try {
@@ -121,24 +124,7 @@ export default class Parallel {
     await Promise.all(this._tasks);
     const hadErrors = this._failed.length > 0 ? true : false;
     if (hadErrors) {
-      let e = new ParallelError(
-        `${this._failed.length} of ${this._failed.length +
-          this._successful
-            .length} parallel tasks failed. Tasks failing were: ${this._failed.join(
-          ", "
-        )}.`
-      );
-      e.failed = this._failed;
-      e.errors = this._errors;
-      e.successful = this._successful;
-      if (this._failFast) {
-        const complete = new Set([...this._successful, ...this._failed]);
-        const incomplete = Object.keys(this._registrations).filter(k => !complete.has(k));
-        e.incomplete = incomplete;
-      }
-      e.results = this._results;
-
-      throw e;
+      throw new ParallelError(this);
     }
 
     return this._results;
@@ -178,10 +164,10 @@ export default class Parallel {
 
   private handleFailure<T>(name: string, err: Error) {
     this._failed.push(name);
-    if (this._failFast) {
-      const e = new Error(`The promise "${name}" failed with `);
-    }
     this._errors[name] = err;
+    if (this._failFast) {
+      throw new ParallelError(this);
+    }
   }
 
   private startDelayedTasks() {
@@ -199,18 +185,6 @@ export default class Parallel {
           this.handleFailure(name, e);
         }
       }
-      // if (isDelayedPromise(task)) {
-      //   try {
-      //     // TODO: try and ensure typings are passed into handleSuccess/Failure
-      //     this._tasks[index] = task()
-      //       .then((result: any) => this.handleSuccess(name, result))
-      //       .catch((err: Error) => this.handleFailure(name, err));
-      //   } catch (e) {
-      //     console.log("caught something:", e);
-
-      //     this.handleFailure(name, e);
-      //   }
-      // }
     });
   }
 }

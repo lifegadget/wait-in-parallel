@@ -39,6 +39,21 @@ describe("Basics →", () => {
     expect(obj.clear).to.be.a("function");
   });
 
+  it("using get() utility function for invalid property throws error", async () => {
+    const obj = Parallel.create();
+    try {
+      obj.get("foobar");
+      throw new Error("Foobar is not a valid get property");
+    } catch (e) {
+      expect(e.message).to.match(/not a valid property/);
+    }
+  });
+
+  it("using get() utility function for a valid property works", async () => {
+    const obj = Parallel.create().failFast();
+    expect(obj.get("failFast")).to.equal(true);
+  });
+
   it("two promises complete within a basic fail-slow scenario", async () => {
     const results = await Parallel.create()
       .add("one", afn1())
