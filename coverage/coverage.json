@@ -1,0 +1,172 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 11,
+    "passes": 11,
+    "pending": 0,
+    "failures": 0,
+    "start": "2018-05-04T19:10:29.189Z",
+    "end": "2018-05-04T19:10:30.168Z",
+    "duration": 979
+  },
+  "tests": [
+    {
+      "title": "fluent interface works",
+      "fullTitle": "Basics → fluent interface works",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "create() static class method instantiates",
+      "fullTitle": "Basics → create() static class method instantiates",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "using get() utility function for invalid property throws error",
+      "fullTitle": "Basics → using get() utility function for invalid property throws error",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "using get() utility function for a valid property works",
+      "fullTitle": "Basics → using get() utility function for a valid property works",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two promises complete within a basic fail-slow scenario",
+      "fullTitle": "Basics → two promises complete within a basic fail-slow scenario",
+      "duration": 202,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two promises with the same name send warning to console but still execute",
+      "fullTitle": "Basics → two promises with the same name send warning to console but still execute",
+      "duration": 202,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two delayed promises with the same name throw an error",
+      "fullTitle": "Basics → two delayed promises with the same name throw an error",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "One of the promises fails inbetween the successes; fails immediately",
+      "fullTitle": "Fail Fast →  One of the promises fails inbetween the successes; fails immediately",
+      "duration": 154,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "One of the promises fails quickly but waits until all done",
+      "fullTitle": "Fail Slow →  One of the promises fails quickly but waits until all done",
+      "duration": 203,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "when a timeout's time limit is exceeded it throws a TimeoutError",
+      "fullTitle": "Timeouts → when a timeout's time limit is exceeded it throws a TimeoutError",
+      "duration": 54,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "when a timeout is set but completion is before time limit, no error is thrown",
+      "fullTitle": "Timeouts → when a timeout is set but completion is before time limit, no error is thrown",
+      "duration": 154,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [],
+  "passes": [
+    {
+      "title": "fluent interface works",
+      "fullTitle": "Basics → fluent interface works",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "create() static class method instantiates",
+      "fullTitle": "Basics → create() static class method instantiates",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "using get() utility function for invalid property throws error",
+      "fullTitle": "Basics → using get() utility function for invalid property throws error",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "using get() utility function for a valid property works",
+      "fullTitle": "Basics → using get() utility function for a valid property works",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two promises complete within a basic fail-slow scenario",
+      "fullTitle": "Basics → two promises complete within a basic fail-slow scenario",
+      "duration": 202,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two promises with the same name send warning to console but still execute",
+      "fullTitle": "Basics → two promises with the same name send warning to console but still execute",
+      "duration": 202,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "two delayed promises with the same name throw an error",
+      "fullTitle": "Basics → two delayed promises with the same name throw an error",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "One of the promises fails inbetween the successes; fails immediately",
+      "fullTitle": "Fail Fast →  One of the promises fails inbetween the successes; fails immediately",
+      "duration": 154,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "One of the promises fails quickly but waits until all done",
+      "fullTitle": "Fail Slow →  One of the promises fails quickly but waits until all done",
+      "duration": 203,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "when a timeout's time limit is exceeded it throws a TimeoutError",
+      "fullTitle": "Timeouts → when a timeout's time limit is exceeded it throws a TimeoutError",
+      "duration": 54,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "when a timeout is set but completion is before time limit, no error is thrown",
+      "fullTitle": "Timeouts → when a timeout is set but completion is before time limit, no error is thrown",
+      "duration": 154,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}
