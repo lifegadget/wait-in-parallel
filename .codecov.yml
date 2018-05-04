@@ -1,0 +1,11 @@
+codecov:
+  branch: master
+coverage:
+  round: up
+  range: 0..10
+
+# Used in Codecov after updating
+coverage:
+  round: up
+  range: 40...75
+  precision: 2

@@ -3,7 +3,9 @@ node_js:
   - '8'
   - '6'
 script:
-  - yarn run test --ignoreLint # test
+  - npm install codecov -g
+  - yarn run build
+  - yarn run test --ignoreLint
 sudo: required
 before_install: # if "install" is overridden
   # Repo for Yarn
@@ -13,3 +15,5 @@ before_install: # if "install" is overridden
   - sudo apt-get install -y -qq yarn
 cache:
   yarn: true
+after_success:
+  - codecov

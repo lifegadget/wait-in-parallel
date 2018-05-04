@@ -5,8 +5,14 @@
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": ["async/await", "typescript"],
-  "files": ["lib", "dist"],
+  "keywords": [
+    "async/await",
+    "typescript"
+  ],
+  "files": [
+    "lib",
+    "dist"
+  ],
   "main": "lib/index.js",
   "module": "dist/wait-in-parallel.es.js",
   "browser": "dist/wait-in-parallel.min.js",
@@ -19,8 +25,9 @@
     "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
     "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
     "test": "./node_modules/.bin/ts-node ./scripts/test.ts ",
-    "test:coverage":
-      "nyc --reporter=text --reporter=html mocha --require ts-node/register test/**/*-spec.ts",
+    "test:coverage": "nyc --reporter=text --reporter=html mocha --require ts-node/register test/**/*-spec.ts",
+    "coverage:coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "coverage:codecov": "nyc report --reporter=json > coverage/coverage.json",
     "invoke": "./node_modules/.bin/ts-node ./scripts/invoke.ts ",
     "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
@@ -67,6 +74,29 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
+    "@types/inquirer": "^0.0.41",
     "common-types": "^1.7.21"
+  },
+  "nyc": {
+    "include": [
+      "test/**/*-spec.ts"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+    "require": [
+      "ts-node/register"
+    ],
+    "all": true,
+    "reporter": [
+      "text-summary",
+      "html"
+    ]
   }
 }

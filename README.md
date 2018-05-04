@@ -1,6 +1,6 @@
 # wait-in-parallel
 
-![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
+![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master) [![codecov](https://codecov.io/gh/lifegadget/wait-in-parallel/branch/master/graph/badge.svg)](https://codecov.io/gh/lifegadget/wait-in-parallel) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)
 
 For Javascript developers who have accepted `async/await` and **TypeScript** into our hearts, our lives have gotten _so much better_ but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
 
