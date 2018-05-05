@@ -1,6 +1,6 @@
 # wait-in-parallel
 
-![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master) [![codecov](https://codecov.io/gh/lifegadget/wait-in-parallel/branch/master/graph/badge.svg)](https://codecov.io/gh/lifegadget/wait-in-parallel) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)
+![travis](https://img.shields.io/travis/lifegadget/wait-in-parallel.svg) [![coveralls](https://coveralls.io/repos/github/lifegadget/wait-in-parallel/badge.svg?branch=master)](https://coveralls.io/github/lifegadget/wait-in-parallel) [![codecov](https://codecov.io/gh/lifegadget/wait-in-parallel/branch/master/graph/badge.svg)](https://codecov.io/gh/lifegadget/wait-in-parallel) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)
 
 For Javascript developers who have accepted `async/await` and **TypeScript** into our hearts, our lives have gotten _so much better_ but there are still some edge cases where you need to be more careful with asynchronous behavior or just where you'd like to have a concise way of expressing parallel execution that's easy to grok.
 
@@ -16,14 +16,14 @@ await Promise.all([anotherThing1, anotherThing2]);
 What about the looping trap? Eh, what trap? I gave it a name to make it sound more formal and scary. Basically what I mean is when you are looping around anything and one of the steps within the loop is _asynchronous_:
 
 ```js
-things.maps(async thing => await process(thing));
+things.maps(async thing => await doSomething(thing));
 doSomethingElse();
 ```
 
 Without really intending to i've fired off a set of parallel executions and then immediately executed `doSomethingElse`. Probably not what you wanted. What if I could instead:
 
 ```js
-things.maps(thing => inParallel.add(process(thing)));
+things.maps(thing => inParallel.add(doSomething(thing)));
 await inParallel.isDone();
 doSomethingElse();
 ```

@@ -45,6 +45,4 @@ async function getScope(): Promise<string> {
   await clearTranspiledJS();
   await transpileJavascript({ scope });
   // await transpileJavascript({ scope, configFile: "tsconfig-esm.json" });
-  await asyncExec("bili lib/index.js --format umd,umd-min,es");
-  await asyncExec("nyc report --reporter=json > coverage/coverage.json");
 })();

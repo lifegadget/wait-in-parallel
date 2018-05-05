@@ -11,12 +11,16 @@ async function deploy(stage: string, fns: string[] = []) {
   const msg = fns.length !== 0 ? `` : ``;
   try {
     if (fns.length === 0) {
-      console.log(chalk.yellow(`- starting full serverless deployment to ${chalk.bold(stage)}`));
+      console.log(
+        chalk.yellow(`- starting full serverless deployment to ${chalk.bold(stage)}`)
+      );
       await asyncExec(`sls deploy --aws-s3-accelerate --stage ${stage}`);
       console.log(chalk.green.bold(`- successful serverless deployment 🚀`));
     } else {
       console.log(
-        chalk.yellow(`- deployment of ${fns.length} serverless function(s): ${fns.join(", ")}`)
+        chalk.yellow(
+          `- deployment of ${fns.length} serverless function(s): ${fns.join(", ")}`
+        )
       );
       await asyncExec(
         `sls deploy function --force --aws-s3-accelerate --function ${fns.join(
@@ -52,4 +56,11 @@ function getStage() {
     await build(fns);
   }
   await deploy(stage, fns);
+  await asyncExec("bili lib/index.js --format umd,umd-min,es");
+  try {
+    await asyncExec("yarn run coverage:codecov");
+    await asyncExec("yarn run coverage:coveralls");
+  } catch (e) {
+    console.error(e.message);
+  }
 })();

@@ -5,9 +5,9 @@
     "passes": 11,
     "pending": 0,
     "failures": 0,
-    "start": "2018-05-04T19:10:29.189Z",
-    "end": "2018-05-04T19:10:30.168Z",
-    "duration": 979
+    "start": "2018-05-05T00:41:19.053Z",
+    "end": "2018-05-05T00:41:20.051Z",
+    "duration": 998
   },
   "tests": [
     {
@@ -41,14 +41,14 @@
     {
       "title": "two promises complete within a basic fail-slow scenario",
       "fullTitle": "Basics → two promises complete within a basic fail-slow scenario",
-      "duration": 202,
+      "duration": 203,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "two promises with the same name send warning to console but still execute",
       "fullTitle": "Basics → two promises with the same name send warning to console but still execute",
-      "duration": 202,
+      "duration": 206,
       "currentRetry": 0,
       "err": {}
     },
@@ -62,28 +62,28 @@
     {
       "title": "One of the promises fails inbetween the successes; fails immediately",
       "fullTitle": "Fail Fast →  One of the promises fails inbetween the successes; fails immediately",
-      "duration": 154,
+      "duration": 161,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "One of the promises fails quickly but waits until all done",
       "fullTitle": "Fail Slow →  One of the promises fails quickly but waits until all done",
-      "duration": 203,
+      "duration": 209,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "when a timeout's time limit is exceeded it throws a TimeoutError",
       "fullTitle": "Timeouts → when a timeout's time limit is exceeded it throws a TimeoutError",
-      "duration": 54,
+      "duration": 58,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "when a timeout is set but completion is before time limit, no error is thrown",
       "fullTitle": "Timeouts → when a timeout is set but completion is before time limit, no error is thrown",
-      "duration": 154,
+      "duration": 153,
       "currentRetry": 0,
       "err": {}
     }
@@ -122,14 +122,14 @@
     {
       "title": "two promises complete within a basic fail-slow scenario",
       "fullTitle": "Basics → two promises complete within a basic fail-slow scenario",
-      "duration": 202,
+      "duration": 203,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "two promises with the same name send warning to console but still execute",
       "fullTitle": "Basics → two promises with the same name send warning to console but still execute",
-      "duration": 202,
+      "duration": 206,
       "currentRetry": 0,
       "err": {}
     },
@@ -143,28 +143,28 @@
     {
       "title": "One of the promises fails inbetween the successes; fails immediately",
       "fullTitle": "Fail Fast →  One of the promises fails inbetween the successes; fails immediately",
-      "duration": 154,
+      "duration": 161,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "One of the promises fails quickly but waits until all done",
       "fullTitle": "Fail Slow →  One of the promises fails quickly but waits until all done",
-      "duration": 203,
+      "duration": 209,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "when a timeout's time limit is exceeded it throws a TimeoutError",
       "fullTitle": "Timeouts → when a timeout's time limit is exceeded it throws a TimeoutError",
-      "duration": 54,
+      "duration": 58,
       "currentRetry": 0,
       "err": {}
     },
     {
       "title": "when a timeout is set but completion is before time limit, no error is thrown",
       "fullTitle": "Timeouts → when a timeout is set but completion is before time limit, no error is thrown",
-      "duration": 154,
+      "duration": 153,
       "currentRetry": 0,
       "err": {}
     }
