@@ -37,6 +37,12 @@ import * as rm from "rimraf";
     );
   } else {
     try {
+      try {
+        await asyncExec("yarn run coverage:codecov");
+        await asyncExec("yarn run coverage:coveralls");
+      } catch (e) {
+        console.error(e.message);
+      }
       await asyncExec(`yarn publish --new-version ${currentVersion}`);
       console.log(chalk.green.bold(`- published to npm successfully 👍\n`));
     } catch (e) {

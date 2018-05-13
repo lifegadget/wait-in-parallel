@@ -89,4 +89,62 @@ describe("Basics →", () => {
       expect(e.message).to.match(/already a registered item/);
     }
   });
+
+  it("nested errors are exposed to the message of final error", async () => {
+    const f1 = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const e = new Error("I've fallen and I can't get up");
+          e.name = "FictitiousError";
+          reject(e);
+        }, 10);
+      });
+    };
+    const f2 = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const e = new Error("This sucks");
+          e.name = "AngryError";
+          reject(e);
+        }, 20);
+      });
+    };
+    const f3 = async () => {
+      await wait(40);
+      throw Error("dammit");
+    };
+    const f4 = async () => {
+      await wait(60);
+      const e = Error("gosh darn");
+      e.name = "SillyError";
+      throw e;
+    };
+    const s1 = () => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve("happy days");
+        }, 30);
+      });
+    };
+
+    const masterError = async () => {
+      const p = Parallel.create()
+        .add("f3", f3)
+        .add("f4", f4);
+      await p.isDone();
+    };
+
+    try {
+      const p = Parallel.create()
+        .add("success", s1)
+        .add("fail1", f1)
+        .add("fail2", f2)
+        .add("fail4", masterError);
+      await p.isDone();
+      throw new Error("Error should have been thrown");
+    } catch (e) {
+      expect(e.message).to.include("fail1 [FictitiousError @");
+      expect(e.message).to.include("fail4 [ParallelError { f3");
+    }
+  });
 });

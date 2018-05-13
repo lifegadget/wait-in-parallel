@@ -14,7 +14,9 @@ const aFn1 = async () => {
 describe("Timeouts →", () => {
   it("when a timeout's time limit is exceeded it throws a TimeoutError", async () => {
     // immediate start
-    const obj = Parallel.create().add("slacker", aFn1(), 25);
+    const obj = Parallel.create()
+      .add("slacker", aFn1(), 25)
+      .add("slow-an-stead", aFn1);
     try {
       await obj.isDone();
       throw new Error("Timeout should have prevented this");
@@ -23,7 +25,9 @@ describe("Timeouts →", () => {
       expect(e.errors.slacker.name).to.equal("TimeoutError");
     }
     // delayed start
-    const obj2 = Parallel.create().add("slacker", aFn1, 25);
+    const obj2 = Parallel.create()
+      .add("slacker", aFn1, 25)
+      .add("slow-an-stead", aFn1);
     try {
       await obj2.isDone();
       throw new Error("Timeout should have prevented this");

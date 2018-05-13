@@ -1,6 +1,6 @@
-import { IDictionary } from "common-types";
+import { IDictionary, wait } from "common-types";
 import ParallelError from "./ParallelError";
-import timeout from "./timeout";
+import TimeoutError from "./TimeoutError";
 
 function isDelayedPromise(test: any) {
   return typeof test === "function" ? true : false;
@@ -151,11 +151,12 @@ export default class Parallel {
       this._registrations[name].deferred = promise;
     } else {
       const duration = options.timeout || 0;
-      this._tasks.push(
-        timeout(promise as Promise<T>, duration)
-          .then(result => this.handleSuccess<T>(name, result as T))
-          .catch((err: Error) => this.handleFailure<T>(name, err))
-      );
+      this._tasks.push(this.promiseOnATimer(promise, name));
+      // this._tasks.push(
+      //   timeout(promise as Promise<T>, duration)
+      //     .then(result => this.handleSuccess<T>(name, result as T))
+      //     .catch((err: Error) => this.handleFailure<T>(name, err))
+      // );
     }
   }
 
@@ -175,18 +176,46 @@ export default class Parallel {
   private startDelayedTasks() {
     Object.keys(this._registrations).map(name => {
       const registration = this._registrations[name];
+      const handleSuccess = (result: any) => this.handleSuccess(name, result);
+      const handleFailure = (err: Error) => this.handleFailure(name, err);
+      const timeout = async (d: number) => {
+        await wait(d);
+        throw new TimeoutError(registration.deferred, d);
+      };
       if (registration.deferred) {
-        const duration = registration.timeout || 0;
         try {
-          this._tasks.push(
-            timeout(registration.deferred(), duration)
-              .then((result: any) => this.handleSuccess(name, result))
-              .catch((err: Error) => this.handleFailure(name, err))
-          );
+          let p: any = () => registration.deferred();
+          this._tasks.push(this.promiseOnATimer(registration.deferred(), name));
         } catch (e) {
           this.handleFailure(name, e);
         }
       }
     });
+  }
+
+  private promiseOnATimer(p: any, name: string) {
+    const registration = this._registrations[name];
+    const handleSuccess = (result: any) => this.handleSuccess(name, result);
+    const handleFailure = (err: Error) => this.handleFailure(name, err);
+    const timeout = async (d: number) => {
+      await wait(d);
+      throw new TimeoutError(registration.deferred, d);
+    };
+
+    const duration = registration.timeout || 0;
+    let timedPromise;
+    try {
+      if (duration > 0) {
+        timedPromise = Promise.race([p, timeout(duration)])
+          .then(handleSuccess)
+          .catch(handleFailure);
+      } else {
+        timedPromise = p.then(handleSuccess).catch(handleFailure);
+      }
+      this._tasks.push(timedPromise);
+      return timedPromise;
+    } catch (e) {
+      this.handleFailure(name, e);
+    }
   }
 }

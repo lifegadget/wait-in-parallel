@@ -24,12 +24,44 @@ export default class ParallelError<T = any> extends Error {
     const errors: IDictionary<Error> = context.get("errors");
     const results = context.get("results");
     const registrations = context.get("registrations");
+    const getFirstErrorLocation = (stack: string) => {
+      if (!stack) {
+        return "";
+      }
+      const lines = stack.split(/\n/).map(l => l.replace(/^.*at /, "").split("("));
+      lines.shift();
+      let [fn, where] = lines[0];
+      where = where
+        .split("/")
+        .slice(-1)[0]
+        .replace(")", "");
+      fn = fn.trim();
+      return `@ ${fn}::${where}`;
+    };
 
     this.name = "ParallelError";
+    const errorSummary = failed
+      .map((f: any) => {
+        const inspect = (e: ParallelError) => {
+          const subErrors: any[] = [];
+          const subError = e.errors;
+
+          Object.keys(subError).map(k =>
+            subErrors.push(
+              `${k}: ${subError[k].name} ${getFirstErrorLocation(subError[k].stack)}`
+            )
+          );
+          return subErrors.join(", ");
+        };
+
+        return errors[f].name === "ParallelError"
+          ? `\n\t- ${f} [ParallelError { ${inspect(errors[f] as ParallelError)} }]`
+          : `\n\t- ${f} [${errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
+      })
+      .join(", ");
+
     this.message = `${context.get("failed").length} of ${failed.length +
-      successful.length} parallel tasks failed. Tasks failing were: ${failed.join(
-      ", "
-    )}.`;
+      successful.length} parallel tasks failed. Tasks failing were: ${errorSummary}.`;
     this.errors = errors;
     this.failed = failed;
     this.successful = successful;
