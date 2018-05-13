@@ -1,6 +1,6 @@
 {
   "name": "wait-in-parallel",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
@@ -25,8 +25,6 @@
       "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts' | coveralls",
     "coverage:codecov":
       "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
-    "invoke": "./node_modules/.bin/ts-node ./scripts/invoke.ts ",
-    "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
     "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
     "watch": "ts-node ./scripts/watch.ts",

@@ -17,6 +17,13 @@ const f1 = async () => {
   await wait(10);
   throw new Error("whoops");
 };
+const f2 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject("never gonna happen");
+    }, 25);
+  });
+};
 
 describe("Fail Slow → ", () => {
   it("One of the promises fails quickly but waits until all done", async () => {
@@ -45,11 +52,13 @@ describe("Fail Slow → ", () => {
         .add("s1", s1)
         .add("s2", s2)
         .add("f1", f1)
+        .add("f2", f2)
         .isDone();
       throw new Error("should not have reached here!");
     } catch (e) {
       expect(e.name).to.equal("ParallelError");
       expect((e as ParallelError).failed).to.include("f1");
+      expect((e as ParallelError).failed).to.include("f2");
       expect((e as ParallelError).successful).to.include("s1");
       expect((e as ParallelError).successful).to.include("s2");
       expect((e as ParallelError).errors).to.haveOwnProperty("f1");

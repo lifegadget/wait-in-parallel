@@ -57,10 +57,4 @@ function getStage() {
   }
   await deploy(stage, fns);
   await asyncExec("bili lib/index.js --format umd,umd-min,es");
-  try {
-    await asyncExec("yarn run coverage:codecov");
-    await asyncExec("yarn run coverage:coveralls");
-  } catch (e) {
-    console.error(e.message);
-  }
 })();

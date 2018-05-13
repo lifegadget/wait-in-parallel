@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn run coverage
+  /usr/local/bin/node /usr/local/bin/yarn run test
 
 PATH: 
   /usr/local/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin
@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "wait-in-parallel",
-    "version": "1.0.0-beta.2",
+    "version": "1.0.0",
     "description": "wait-in-parallel",
     "license": "MIT",
     "repository": "https://your-server.com/lifegadget/wait-in-parallel",
@@ -36,13 +36,11 @@ npm manifest:
       "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
       "test": "./node_modules/.bin/ts-node ./scripts/test.ts ",
       "coverage":
-        "nyc _mocha -reporter=html --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
+        "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
       "coverage:coveralls":
-        "nyc _mocha --reporter=lcov-text --require ts-node/register 'test/**/*-spec.ts' | coveralls",
+        "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts' | coveralls",
       "coverage:codecov":
-        "nyc _mocha --require ts-node/register 'test/**/*-spec.ts' --reporter=json > coverage/coverage.json",
-      "invoke": "./node_modules/.bin/ts-node ./scripts/invoke.ts ",
-      "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
+        "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
       "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
       "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
       "watch": "ts-node ./scripts/watch.ts",
@@ -4825,7 +4823,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c nyc _mocha -reporter=html --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html
+  Arguments: -c ./node_modules/.bin/ts-node ./scripts/test.ts 
   Directory: /Users/ken/mine/oss/wait-in-parallel
   Output:
   
