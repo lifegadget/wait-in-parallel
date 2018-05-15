@@ -19,7 +19,7 @@ export type ParallelTask<T> = Promise<T> | DelayedPromise<T>;
 export type IParallelFailureNotification = (which: string, error: Error) => void;
 export type IParallelSuccessNotification<T = any> = (which: string, result: T) => void;
 
-export default class Parallel {
+export default class Parallel<T = any> {
   private _tasks: any[] = [];
   private _errors: IDictionary<Error> = {};
   private _results: IDictionary = {};
@@ -57,7 +57,7 @@ export default class Parallel {
     return this[`_${prop}` as keyof this] as any;
   }
 
-  public add<T = any>(name: string, promise: ParallelTask<T>, timeout?: number) {
+  public add(name: string, promise: ParallelTask<T>, timeout?: number) {
     try {
       this.register<T>(name, promise, { timeout });
     } catch (e) {
@@ -120,7 +120,7 @@ export default class Parallel {
     return this;
   }
 
-  public async isDone(): Promise<IDictionary> {
+  public async isDone(): Promise<IDictionary<T>> {
     this.startDelayedTasks();
     await Promise.all(this._tasks);
     const hadErrors = this._failed.length > 0 ? true : false;
