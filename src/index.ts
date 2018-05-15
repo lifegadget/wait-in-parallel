@@ -14,12 +14,12 @@ export interface IParallelDone {
 }
 
 export type DelayedPromise<T> = () => Promise<T>;
-export type ParallelTask<T> = Promise<T> | DelayedPromise<T>;
+export type ParallelTask<T = any> = Promise<T> | DelayedPromise<T>;
 
 export type IParallelFailureNotification = (which: string, error: Error) => void;
 export type IParallelSuccessNotification<T = any> = (which: string, result: T) => void;
 
-export default class Parallel<T = IDictionary> {
+export default class Parallel<T = any> {
   private _tasks: any[] = [];
   private _errors: IDictionary<Error> = {};
   private _results: IDictionary = {};
@@ -57,9 +57,9 @@ export default class Parallel<T = IDictionary> {
     return this[`_${prop}` as keyof this] as any;
   }
 
-  public add(name: string, promise: ParallelTask<T>, timeout?: number) {
+  public add<K = T>(name: string, promise: ParallelTask<K>, timeout?: number) {
     try {
-      this.register<T>(name, promise, { timeout });
+      this.register<K>(name, promise, { timeout });
     } catch (e) {
       if (e.name === "NameAlreadyExists") {
         if (isDelayedPromise(promise)) {
@@ -71,7 +71,7 @@ export default class Parallel<T = IDictionary> {
           console.error(
             `wait-in-parallel: The promise just added as "${name}" is a duplicate name to one already being managed but since the Promise is already executing we will give it a new name of "${newName}" and continue to manage it!`
           );
-          this.register<T>(newName, promise, { timeout });
+          this.register<K>(newName, promise, { timeout });
         }
       }
     }
@@ -120,7 +120,7 @@ export default class Parallel<T = IDictionary> {
     return this;
   }
 
-  public async isDone(): Promise<T> {
+  public async isDone() {
     this.startDelayedTasks();
     await Promise.all(this._tasks);
     const hadErrors = this._failed.length > 0 ? true : false;
@@ -128,14 +128,10 @@ export default class Parallel<T = IDictionary> {
       throw new ParallelError(this);
     }
 
-    return this._results as T;
+    return this._results as IDictionary<T>;
   }
 
-  private register<T = any>(
-    name: string,
-    promise: ParallelTask<T>,
-    options: IDictionary
-  ) {
+  private register<K = T>(name: string, promise: ParallelTask<K>, options: IDictionary) {
     const existing = new Set(Object.keys(this._registrations));
     if (existing.has(name)) {
       const e = new Error(
