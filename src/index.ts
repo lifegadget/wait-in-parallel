@@ -163,7 +163,12 @@ export default class Parallel<T = any> {
 
   private handleFailure<T>(name: string, err: Error) {
     this._failed.push(name);
-    this._errors[name] = err;
+    this._errors[name] = {
+      message: err.message,
+      name: err.name,
+      stack: err.stack,
+      ...err
+    };
     if (this._failFast) {
       throw new ParallelError(this);
     }
