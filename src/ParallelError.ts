@@ -32,11 +32,13 @@ export default class ParallelError<T = any> extends Error {
       lines.shift();
       let [fn, where] = lines[0];
       where = where
-        .split("/")
-        .slice(-1)[0]
-        .replace(")", "");
+        ? where
+            .split("/")
+            .slice(-1)[0]
+            .replace(")", "")
+        : null;
       fn = fn.trim();
-      return `@ ${fn}::${where}`;
+      return where ? `@ ${fn}::${where}` : `@ ${fn}`;
     };
 
     this.name = "ParallelError";
