@@ -3,7 +3,6 @@ import Parallel, { IParallelFailureNotification } from "../src/index";
 import * as chai from "chai";
 import { wait } from "common-types";
 import * as helpers from "./testing/helpers";
-import { pbkdf2 } from "crypto";
 
 const expect = chai.expect;
 const afn1 = async () => {
@@ -42,7 +41,7 @@ describe("Basics →", () => {
   it("using get() utility function for invalid property throws error", async () => {
     const obj = Parallel.create();
     try {
-      obj.get("foobar");
+      obj._get("foobar");
       throw new Error("Foobar is not a valid get property");
     } catch (e) {
       expect(e.message).to.match(/not a valid property/);
@@ -51,7 +50,7 @@ describe("Basics →", () => {
 
   it("using get() utility function for a valid property works", async () => {
     const obj = Parallel.create().failFast();
-    expect(obj.get("failFast")).to.equal(true);
+    expect(obj._get("failFast")).to.equal(true);
   });
 
   it("two promises complete within a basic fail-slow scenario", async () => {

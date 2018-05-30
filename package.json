@@ -1,6 +1,6 @@
 {
   "name": "wait-in-parallel",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
@@ -14,7 +14,8 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "./node_modules/.bin/ts-node ./scripts/build.ts",
+    "build":
+      "./node_modules/.bin/ts-node ./scripts/build.ts && bili lib/index.js --format umd-min,es",
     "build:umd": "./node_modules/.bin/bili ./lib/index.js --format umd,umd-min",
     "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
     "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
@@ -71,7 +72,8 @@
   },
   "dependencies": {
     "@types/inquirer": "^0.0.41",
-    "common-types": "^1.7.21"
+    "common-types": "^1.7.21",
+    "typed-conversions": "^0.7.4"
   },
   "nyc": {
     "extension": [".ts", ".tsx"],

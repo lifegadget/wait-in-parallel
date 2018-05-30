@@ -1,7 +1,7 @@
 import { IDictionary } from "common-types";
 import Parallel from ".";
 
-export default class ParallelError<T = any> extends Error {
+export class ParallelError<T = any> extends Error {
   name = "ParallelError";
   /** an overall health message about the tasks within the parallel task */
   public message: string;
@@ -19,11 +19,11 @@ export default class ParallelError<T = any> extends Error {
 
   constructor(context: Parallel) {
     super();
-    const successful = context.get("successful");
-    const failed = context.get("failed");
-    const errors: IDictionary<Error> = context.get("errors");
-    const results = context.get("results");
-    const registrations = context.get("registrations");
+    const successful = context._get("successful");
+    const failed = context._get("failed");
+    const errors: IDictionary<Error> = context._get("errors");
+    const results = context._get("results");
+    const registrations = context._get("registrations");
     const getFirstErrorLocation = (stack: string) => {
       if (!stack) {
         return "";
@@ -62,7 +62,7 @@ export default class ParallelError<T = any> extends Error {
       })
       .join(", ");
 
-    this.message = `${context.get("failed").length} of ${failed.length +
+    this.message = `${context._get("failed").length} of ${failed.length +
       successful.length} parallel tasks failed. Tasks failing were: ${errorSummary}.`;
     this.errors = errors;
     this.failed = failed;
