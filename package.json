@@ -14,7 +14,8 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "./node_modules/.bin/ts-node ./scripts/build.ts",
+    "build":
+      "./node_modules/.bin/ts-node ./scripts/build.ts && bili lib/index.js --format umd-min,es",
     "build:umd": "./node_modules/.bin/bili ./lib/index.js --format umd,umd-min",
     "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
     "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
