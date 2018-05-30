@@ -90,7 +90,50 @@ Imagine, however, that the "blue" promise failed. Then instead of completing the
 }
 ```
 
+
 ## Advanced Usage
+
+#### Similar "things" in Parallel
+
+The initial example above was a bit non-descript but imagine that `blue` and `red` represent two different data structures or _"things"_. It is quite common for you to want to evalute _unlike_ things in parallel but it is equally common to want to run a bunch of _like_ things together in parallel. In this latter scenario there is nothing preventing us from using exactly the same approach as above but in many cases there are some optimizations you will want to take advantage of.
+
+First off is stronger typing of your results. The `Parallel` object is a "generic" and can be typecast to indicate what your parallel tasks will return. So for instance, imagine we have a **Person** interface we are expecting to come back from all our individual tasks we would then initialize the object instance like so:
+
+```TypeScript
+const p = new Parallel<Person>();
+// where people is an array of "person IDs" 
+// and getPerson async gets them from DB
+Object
+  .keys(people)
+  .map(person => p.add(person, this.getPerson(person)));
+const results = p.isDone();
+```
+
+Great, so now all of our person objects have come back and they are strongly typed to being Person objects. And I can reference them by the _TaskId_ I used when adding:
+
+```TypeScript
+const name = results["id1234"].name;
+```
+
+Great, but often we want to do some array processing on our results and that we received a dictionary (which is great for quick lookups) is less convenient than just an array. No problem, you can have an array if that's what you want with an alternative to `isDone` called `isDoneAsArray`:
+
+```TypeScript
+const results = p.isDoneAsArray();
+const names = results.map(p => p.name);
+```
+
+Pretty nice, right? Ok now you may have noticed that this approach just returns an array of `Person` objects but the _TaskId_ we passed in with `add()` is not there. True. So should we just NOT have to have a `TaskId`? Well typically the answer is "no" because that `TaskId` is super useful when you have errors. Also, _not_ having it in this example is not "lossy" because the `Person` object almost surely has a `person.id` attribute which serves as an identity property. That said, there may be situations where you do want to preserve the `TaskId` so in these situations you can do the following:
+
+```TypeScript
+type PersonWithTaskId = Person && { taskId: string };
+const p = new Parallel<PersonWithTaskId>();
+Object
+  .keys(people)
+  .map(person => p.add(person, this.getPerson(person)));
+const results = p.isDoneAsArray('taskId');
+```
+
+Whatever string property you put in as a parameter to `isDoneAsArray(prop: string)` will be added to the resulting array of hashes.
 
 #### Fail Fast
 
@@ -164,7 +207,7 @@ const p = () => Promise.resolve("I'm a promise");
 This allows you to allows you to load up a number of parallel execution groups but they don't start executing until the call to `.isDone()` is called:
 
 ```ts
-import Parallel, { delayed } from "wait-in-parallel";
+import Parallel from "wait-in-parallel";
 
 const group1 = Parallel.create()
   .add(() => job1)

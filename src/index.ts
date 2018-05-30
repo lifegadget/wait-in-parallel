@@ -1,6 +1,9 @@
 import { IDictionary, wait } from "common-types";
-import ParallelError from "./ParallelError";
+import { ParallelError } from "./ParallelError";
 import TimeoutError from "./TimeoutError";
+import { hashToArray } from "typed-conversions";
+
+export { ParallelError } from "./ParallelError";
 
 function isDelayedPromise(test: any) {
   return typeof test === "function" ? true : false;
@@ -15,9 +18,22 @@ export interface IParallelDone {
 
 export type DelayedPromise<T> = () => Promise<T>;
 export type ParallelTask<T = any> = Promise<T> | DelayedPromise<T>;
+export interface IParallelArrayType<T> {
+  name: string;
+  value: T;
+  isArray: true;
+}
+
+export interface IParallelHashType<T> extends IDictionary<T> {
+  isArray: undefined;
+}
 
 export type IParallelFailureNotification = (which: string, error: Error) => void;
 export type IParallelSuccessNotification<T = any> = (which: string, result: T) => void;
+
+function ensureObject(something: any): IDictionary {
+  return typeof something === "object" ? something : { value: something };
+}
 
 export default class Parallel<T = any> {
   private _tasks: any[] = [];
@@ -42,14 +58,16 @@ export default class Parallel<T = any> {
   }
 
   /** a utility method to get certain private properties in the class */
-  public get(prop: string) {
+  public _get(prop: string) {
     const validGets = new Set([
       "failed",
       "successful",
       "errors",
       "results",
       "failFast",
-      "registrations"
+      "registrations",
+      "notifyOnFailure",
+      "notifyOnSuccess"
     ]);
     if (!validGets.has(prop)) {
       throw new Error(`"${prop}" is not a valid property to get.`);
@@ -76,16 +94,6 @@ export default class Parallel<T = any> {
       }
     }
 
-    return this;
-  }
-
-  public notifyOnFailure(fn: IParallelFailureNotification) {
-    this._failureCallbacks.push(fn);
-    return this;
-  }
-
-  public notifyOnSuccess(fn: IParallelSuccessNotification) {
-    this._successCallbacks.push(fn);
     return this;
   }
 
@@ -120,6 +128,10 @@ export default class Parallel<T = any> {
     return this;
   }
 
+  /**
+   * Waits for all parallel tasks to complete and then returns
+   * results. If failure occurs and error will be thrown.
+   */
   public async isDone() {
     this.startDelayedTasks();
     await Promise.all(this._tasks);
@@ -128,7 +140,31 @@ export default class Parallel<T = any> {
       throw new ParallelError(this);
     }
 
-    return this._results as IDictionary<T>;
+    return this._results as IParallelHashType<T>;
+  }
+
+  public async isDoneAsArray(includeTaskIdAs?: string) {
+    const hash = await this.isDone();
+    const results: T[] = [];
+    Object.keys(hash).map(key => {
+      const keyValue: any = hash[key];
+      results.push(
+        includeTaskIdAs
+          ? { ...ensureObject(keyValue), ...{ [includeTaskIdAs]: key } }
+          : keyValue
+      );
+    });
+    return results;
+  }
+
+  public notifyOnFailure(fn: IParallelFailureNotification) {
+    this._failureCallbacks.push(fn);
+    return this;
+  }
+
+  public notifyOnSuccess(fn: IParallelSuccessNotification) {
+    this._successCallbacks.push(fn);
+    return this;
   }
 
   private register<K = T>(name: string, promise: ParallelTask<K>, options: IDictionary) {
@@ -148,20 +184,15 @@ export default class Parallel<T = any> {
     } else {
       const duration = options.timeout || 0;
       this._tasks.push(this.promiseOnATimer(promise, name));
-      // this._tasks.push(
-      //   timeout(promise as Promise<T>, duration)
-      //     .then(result => this.handleSuccess<T>(name, result as T))
-      //     .catch((err: Error) => this.handleFailure<T>(name, err))
-      // );
     }
   }
 
-  private handleSuccess<T>(name: string, result: T) {
+  private _handleSuccess<T>(name: string, result: T) {
     this._successful.push(name);
     this._results[name] = result as T;
   }
 
-  private handleFailure<T>(name: string, err: Error) {
+  private _handleFailure<T>(name: string, err: Error) {
     this._failed.push(name);
     this._errors[name] = {
       ...err,
@@ -177,8 +208,8 @@ export default class Parallel<T = any> {
   private startDelayedTasks() {
     Object.keys(this._registrations).map(name => {
       const registration = this._registrations[name];
-      const handleSuccess = (result: any) => this.handleSuccess(name, result);
-      const handleFailure = (err: Error) => this.handleFailure(name, err);
+      const handleSuccess = (result: any) => this._handleSuccess(name, result);
+      const handleFailure = (err: Error) => this._handleFailure(name, err);
       const timeout = async (d: number) => {
         await wait(d);
         throw new TimeoutError(registration.deferred, d);
@@ -188,7 +219,7 @@ export default class Parallel<T = any> {
           let p: any = () => registration.deferred();
           this._tasks.push(this.promiseOnATimer(registration.deferred(), name));
         } catch (e) {
-          this.handleFailure(name, e);
+          this._handleFailure(name, e);
         }
       }
     });
@@ -196,8 +227,8 @@ export default class Parallel<T = any> {
 
   private promiseOnATimer(p: any, name: string) {
     const registration = this._registrations[name];
-    const handleSuccess = (result: any) => this.handleSuccess(name, result);
-    const handleFailure = (err: Error) => this.handleFailure(name, err);
+    const handleSuccess = (result: any) => this._handleSuccess(name, result);
+    const handleFailure = (err: Error) => this._handleFailure(name, err);
     const timeout = async (d: number) => {
       await wait(d);
       throw new TimeoutError(registration.deferred, d);
@@ -216,7 +247,7 @@ export default class Parallel<T = any> {
       this._tasks.push(timedPromise);
       return timedPromise;
     } catch (e) {
-      this.handleFailure(name, e);
+      this._handleFailure(name, e);
     }
   }
 }
