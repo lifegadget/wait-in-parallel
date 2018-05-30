@@ -2,7 +2,7 @@
 import Parallel, { IParallelFailureNotification } from "../src/index";
 import * as chai from "chai";
 import { wait } from "common-types";
-import ParallelError from "../src/ParallelError";
+import { ParallelError } from "../src/ParallelError";
 
 const expect = chai.expect;
 
