@@ -1,12 +1,18 @@
 {
   "name": "wait-in-parallel",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": ["async/await", "typescript"],
-  "files": ["lib", "dist"],
+  "keywords": [
+    "async/await",
+    "typescript"
+  ],
+  "files": [
+    "lib",
+    "dist"
+  ],
   "main": "lib/index.js",
   "module": "dist/wait-in-parallel.es.js",
   "browser": "dist/wait-in-parallel.min.js",
@@ -14,18 +20,13 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build":
-      "./node_modules/.bin/ts-node ./scripts/build.ts && bili lib/index.js --format umd-min,es",
-    "build:umd": "./node_modules/.bin/bili ./lib/index.js --format umd,umd-min",
+    "build": "tslint src/**/*.ts && rollup -c",
     "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
     "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
     "test": "./node_modules/.bin/ts-node ./scripts/test.ts ",
-    "coverage":
-      "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
-    "coverage:coveralls":
-      "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts' | coveralls",
-    "coverage:codecov":
-      "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
+    "coverage": "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
+    "coverage:coveralls": "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts' | coveralls",
+    "coverage:codecov": "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
     "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
     "watch": "ts-node ./scripts/watch.ts",
@@ -59,7 +60,8 @@
     "nyc": "^11.7.1",
     "prettier": "^1.12.1",
     "rimraf": "^2.6.2",
-    "rollup-plugin-typescript2": "^0.13.0",
+    "rollup": "^0.60.7",
+    "rollup-plugin-typescript2": "^0.15.0",
     "simple-git": "^1.92.0",
     "test-console": "^1.1.0",
     "ts-node": "^6.0.2",
@@ -76,9 +78,16 @@
     "typed-conversions": "^0.7.4"
   },
   "nyc": {
-    "extension": [".ts", ".tsx"],
-    "include": ["src"],
-    "exclude": ["**/*.d.ts"],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
     "reporter": [],
     "all": true
   }

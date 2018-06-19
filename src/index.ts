@@ -1,7 +1,6 @@
 import { IDictionary, wait } from "common-types";
 import { ParallelError } from "./ParallelError";
 import TimeoutError from "./TimeoutError";
-import { hashToArray } from "typed-conversions";
 
 export { ParallelError } from "./ParallelError";
 
