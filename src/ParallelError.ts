@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-import Parallel from ".";
+import { Parallel } from "./index";
 
 export class ParallelError<T = any> extends Error {
   name = "ParallelError";

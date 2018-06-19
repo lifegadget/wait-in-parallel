@@ -19,7 +19,7 @@ export default {
       name: "AbstractedClient",
       sourcemap: true,
       globals: {
-        "common-types": "common-types"
+        "common-types": "commonTypes"
       }
     }
   ],
@@ -27,7 +27,8 @@ export default {
     "firebase-api-surface",
     "typed-conversions",
     "serialized-query",
-    "@firebase/app-types"
+    "@firebase/app-types",
+    "common-types"
   ],
   plugins: [
     typescript({
