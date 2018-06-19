@@ -272,6 +272,6 @@ class Parallel {
     }
 }
 
-exports.default = Parallel;
+exports.Parallel = Parallel;
 exports.ParallelError = ParallelError;
 //# sourceMappingURL=wait-in-parallel.cjs.js.map

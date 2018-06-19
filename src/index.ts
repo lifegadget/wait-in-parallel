@@ -1,7 +1,6 @@
 import { IDictionary, wait } from "common-types";
 import { ParallelError } from "./ParallelError";
-import TimeoutError from "./TimeoutError";
-
+import { TimeoutError } from "./TimeoutError";
 export { ParallelError } from "./ParallelError";
 
 function isDelayedPromise(test: any) {
@@ -34,7 +33,7 @@ function ensureObject(something: any): IDictionary {
   return typeof something === "object" ? something : { value: something };
 }
 
-export default class Parallel<T = any> {
+export class Parallel<T = any> {
   private _tasks: any[] = [];
   private _errors: IDictionary<Error> = {};
   private _results: IDictionary = {};

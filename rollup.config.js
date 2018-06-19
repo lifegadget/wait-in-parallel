@@ -17,7 +17,10 @@ export default {
       file: "dist/wait-in-parallel.umd.js",
       format: "umd",
       name: "AbstractedClient",
-      sourcemap: true
+      sourcemap: true,
+      globals: {
+        "common-types": "common-types"
+      }
     }
   ],
   external: [

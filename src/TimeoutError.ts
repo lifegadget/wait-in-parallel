@@ -1,4 +1,4 @@
-export default class TimeoutError<T = any> extends Error {
+export class TimeoutError<T = any> extends Error {
   constructor(attemptedPromise: Promise<T>, duration: number) {
     super();
     this.name = "TimeoutError";

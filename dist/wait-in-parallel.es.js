@@ -268,6 +268,5 @@ class Parallel {
     }
 }
 
-export default Parallel;
-export { ParallelError };
+export { Parallel, ParallelError };
 //# sourceMappingURL=wait-in-parallel.es.js.map
