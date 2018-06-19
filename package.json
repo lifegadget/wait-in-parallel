@@ -1,6 +1,6 @@
 {
   "name": "wait-in-parallel",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
@@ -13,10 +13,10 @@
     "lib",
     "dist"
   ],
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "module": "dist/wait-in-parallel.es.js",
-  "browser": "dist/wait-in-parallel.min.js",
-  "typings": "lib/index.d.ts",
+  "browser": "dist/wait-in-parallel.umd.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
