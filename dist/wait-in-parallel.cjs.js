@@ -174,7 +174,13 @@ class Parallel {
     isDone() {
         return __awaiter(this, void 0, void 0, function* () {
             this.startDelayedTasks();
-            yield Promise.all(this._tasks);
+            try {
+                yield Promise.all(this._tasks);
+            }
+            catch (e) {
+                console.log('HAD ERROR(S)', e.errors);
+                throw e;
+            }
             const hadErrors = this._failed.length > 0 ? true : false;
             if (hadErrors) {
                 throw new ParallelError(this);

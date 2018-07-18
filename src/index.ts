@@ -132,7 +132,11 @@ export class Parallel<T = any> {
    */
   public async isDone() {
     this.startDelayedTasks();
-    await Promise.all(this._tasks);
+    try {
+      await Promise.all(this._tasks);
+    } catch (e) {
+      throw e;
+    }
     const hadErrors = this._failed.length > 0 ? true : false;
     if (hadErrors) {
       throw new ParallelError(this);
