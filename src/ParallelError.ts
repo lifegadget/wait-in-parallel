@@ -1,5 +1,13 @@
 import { IDictionary } from "common-types";
 import { Parallel } from "./index";
+const first = require("lodash.first");
+
+/**
+ * The first key in a Hash/Dictionary
+ */
+function firstKey<T = any>(dictionary: IDictionary<T>) {
+  return first(Object.keys(dictionary));
+}
 
 export class ParallelError<T = any> extends Error {
   name = "ParallelError";
@@ -59,7 +67,9 @@ export class ParallelError<T = any> extends Error {
         };
 
         return errors[f].name === "ParallelError"
-          ? `\n  - ${f} [ParallelError { ${inspect(errors[f] as ParallelError)} }]`
+          ? `\n  - ${f} [ParallelError ${context.title ? context.title : ""} { ${inspect(
+              errors[f] as ParallelError
+            )} }]`
           : `\n  - ${f} [${
               errors[f].code ? `${errors[f].name}:${errors[f].code}` : errors[f].name
             } ${getFirstErrorLocation(errors[f].stack)}]`;
@@ -69,9 +79,11 @@ export class ParallelError<T = any> extends Error {
     this.message = `${context.title ? context.title + ": " : ""}${
       context._get("failed").length
     } of ${failed.length +
-      successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.\n\nFirst error message was: ${
-      errors[0].message
-    }`;
+      successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}."`;
+    this.message +=
+      Object.keys(errors).length > 0
+        ? `\n\nFirst error message was: ${(this, errors[firstKey(errors)].message)}`
+        : "";
     this.errors = errors;
     this.failed = failed;
     this.successful = successful;

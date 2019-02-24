@@ -1,5 +1,5 @@
 // tslint:disable:no-implicit-dependencies
-import Parallel, { IParallelFailureNotification } from "../src/index";
+import { Parallel, IParallelFailureNotification } from "../src/index";
 import * as chai from "chai";
 import { wait } from "common-types";
 import * as helpers from "./testing/helpers";
@@ -39,7 +39,7 @@ describe("Basics →", () => {
   });
 
   it("using get() utility function for invalid property throws error", async () => {
-    const obj = Parallel.create();
+    const obj = Parallel.create("test title");
     try {
       obj._get("foobar");
       throw new Error("Foobar is not a valid get property");
@@ -127,14 +127,14 @@ describe("Basics →", () => {
     };
 
     const masterError = async () => {
-      const p = Parallel.create()
+      const p = Parallel.create("Master Error")
         .add("f3", f3)
         .add("f4", f4);
       await p.isDone();
     };
 
     try {
-      const p = Parallel.create()
+      const p = Parallel.create("Nested Errors")
         .add("success", s1)
         .add("fail1", f1)
         .add("fail2", f2)
@@ -142,6 +142,8 @@ describe("Basics →", () => {
       await p.isDone();
       throw new Error("Error should have been thrown");
     } catch (e) {
+      console.log(e);
+
       expect(e.message).to.include("fail1 [FictitiousError @");
       expect(e.message).to.include("fail4 [ParallelError { f3");
     }

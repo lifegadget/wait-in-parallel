@@ -24,6 +24,10 @@ function __awaiter(thisArg, _arguments, P, generator) {
     });
 }
 
+const first = require("lodash.first");
+function firstKey(dictionary) {
+    return first(Object.keys(dictionary));
+}
 class ParallelError extends Error {
     constructor(context) {
         super();
@@ -59,12 +63,16 @@ class ParallelError extends Error {
                 return subErrors.join(", ");
             };
             return errors[f].name === "ParallelError"
-                ? `\n  - ${f} [ParallelError { ${inspect(errors[f])} }]`
+                ? `\n  - ${f} [ParallelError ${context.title ? context.title : ""} { ${inspect(errors[f])} }]`
                 : `\n  - ${f} [${errors[f].code ? `${errors[f].name}:${errors[f].code}` : errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
         })
             .join(", ");
         this.message = `${context.title ? context.title + ": " : ""}${context._get("failed").length} of ${failed.length +
-            successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.\n\nFirst error message was: ${errors[0].message}`;
+            successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}."`;
+        this.message +=
+            Object.keys(errors).length > 0
+                ? `\n\nFirst error message was: ${(errors[firstKey(errors)].message)}`
+                : "";
         this.errors = errors;
         this.failed = failed;
         this.successful = successful;

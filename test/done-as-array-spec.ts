@@ -1,5 +1,5 @@
 // tslint:disable:no-implicit-dependencies
-import Parallel, { IParallelFailureNotification } from "../src/index";
+import { Parallel, IParallelFailureNotification } from "../src/index";
 import * as chai from "chai";
 import { wait } from "common-types";
 import * as helpers from "./testing/helpers";
