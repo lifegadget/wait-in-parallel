@@ -42,7 +42,7 @@ class ParallelError extends Error {
                 return "";
             }
             const lines = stack.split(/\n/).map(l => l.replace(/^.*at /, "").split("("));
-            lines.shift();
+            lines.shift().filter(i => !i.includes("createError"));
             let [fn, where] = lines[0];
             where = where
                 ? where
@@ -63,12 +63,12 @@ class ParallelError extends Error {
                 return subErrors.join(", ");
             };
             return errors[f].name === "ParallelError"
-                ? `\n\t- ${f} [ParallelError { ${inspect(errors[f])} }]`
-                : `\n\t- ${f} [${errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
+                ? `\n  - ${f} [ParallelError { ${inspect(errors[f])} }]`
+                : `\n  - ${f} [${errors[f].code ? errors[f].code : errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
         })
             .join(", ");
-        this.message = `${context._get("failed").length} of ${failed.length +
-            successful.length} parallel tasks failed. Tasks failing were: ${errorSummary}.`;
+        this.message = `${context.title ? context.title + ": " : ""}${context._get("failed").length} of ${failed.length +
+            successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.`;
         this.errors = errors;
         this.failed = failed;
         this.successful = successful;
@@ -96,7 +96,8 @@ function ensureObject(something) {
     return typeof something === "object" ? something : { value: something };
 }
 class Parallel {
-    constructor(options = { throw: true }) {
+    constructor(title, options = { throw: true }) {
+        this.title = title;
         this.options = options;
         this._tasks = [];
         this._errors = {};
@@ -111,8 +112,8 @@ class Parallel {
             options.throw = true;
         }
     }
-    static create() {
-        const obj = new Parallel();
+    static create(title) {
+        const obj = new Parallel(title);
         return obj;
     }
     _get(prop) {
@@ -178,7 +179,6 @@ class Parallel {
                 yield Promise.all(this._tasks);
             }
             catch (e) {
-                console.log('HAD ERROR(S)', e.errors);
                 throw e;
             }
             const hadErrors = this._failed.length > 0 ? true : false;

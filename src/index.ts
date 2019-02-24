@@ -44,12 +44,12 @@ export class Parallel<T = any> {
   private _failureCallbacks: IParallelFailureNotification[] = [];
   private _successCallbacks: IParallelSuccessNotification[] = [];
 
-  public static create() {
-    const obj = new Parallel();
+  public static create(title?: string) {
+    const obj = new Parallel(title);
     return obj;
   }
 
-  constructor(private options: IDictionary = { throw: true }) {
+  constructor(public title?: string, private options: IDictionary = { throw: true }) {
     if (options.throw === undefined) {
       options.throw = true;
     }
