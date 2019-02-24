@@ -125,7 +125,7 @@ const names = results.map(p => p.name);
 Pretty nice, right? Ok now you may have noticed that this approach just returns an array of `Person` objects but the _TaskId_ we passed in with `add()` is not there. True. So should we just NOT have to have a `TaskId`? Well typically the answer is "no" because that `TaskId` is super useful when you have errors. Also, _not_ having it in this example is not "lossy" because the `Person` object almost surely has a `person.id` attribute which serves as an identity property. That said, there may be situations where you do want to preserve the `TaskId` so in these situations you can do the following:
 
 ```TypeScript
-type PersonWithTaskId = Person && { taskId: string };
+type PersonWithTaskId = Person & { taskId: string };
 const p = new Parallel<PersonWithTaskId>();
 Object
   .keys(people)

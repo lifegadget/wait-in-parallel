@@ -1,10 +1,12 @@
 import { IDictionary } from "common-types";
-import Parallel from ".";
+import { Parallel } from "./index";
 
 export class ParallelError<T = any> extends Error {
   name = "ParallelError";
   /** an overall health message about the tasks within the parallel task */
   public message: string;
+  /** newer versions of node will have codes and also common-types creates errors with this set */
+  public code: string;
 
   /** a list of the failed tasks within the parallel effort */
   public failed: string[];
@@ -21,7 +23,7 @@ export class ParallelError<T = any> extends Error {
     super();
     const successful = context._get("successful");
     const failed = context._get("failed");
-    const errors: IDictionary<Error> = context._get("errors");
+    const errors: IDictionary<Error & { code: string }> = context._get("errors");
     const results = context._get("results");
     const registrations = context._get("registrations");
     const getFirstErrorLocation = (stack: string) => {
@@ -29,7 +31,7 @@ export class ParallelError<T = any> extends Error {
         return "";
       }
       const lines = stack.split(/\n/).map(l => l.replace(/^.*at /, "").split("("));
-      lines.shift();
+      lines.shift().filter(i => !i.includes("createError"));
       let [fn, where] = lines[0];
       where = where
         ? where
@@ -57,13 +59,19 @@ export class ParallelError<T = any> extends Error {
         };
 
         return errors[f].name === "ParallelError"
-          ? `\n\t- ${f} [ParallelError { ${inspect(errors[f] as ParallelError)} }]`
-          : `\n\t- ${f} [${errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
+          ? `\n  - ${f} [ParallelError { ${inspect(errors[f] as ParallelError)} }]`
+          : `\n  - ${f} [${
+              errors[f].code ? `${errors[f].name}:${errors[f].code}` : errors[f].name
+            } ${getFirstErrorLocation(errors[f].stack)}]`;
       })
       .join(", ");
 
-    this.message = `${context._get("failed").length} of ${failed.length +
-      successful.length} parallel tasks failed. Tasks failing were: ${errorSummary}.`;
+    this.message = `${context.title ? context.title + ": " : ""}${
+      context._get("failed").length
+    } of ${failed.length +
+      successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.\n\nFirst error message was: ${
+      errors[0].message
+    }`;
     this.errors = errors;
     this.failed = failed;
     this.successful = successful;

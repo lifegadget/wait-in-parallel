@@ -1,8 +1,6 @@
 import { IDictionary, wait } from "common-types";
 import { ParallelError } from "./ParallelError";
-import TimeoutError from "./TimeoutError";
-import { hashToArray } from "typed-conversions";
-
+import { TimeoutError } from "./TimeoutError";
 export { ParallelError } from "./ParallelError";
 
 function isDelayedPromise(test: any) {
@@ -35,7 +33,7 @@ function ensureObject(something: any): IDictionary {
   return typeof something === "object" ? something : { value: something };
 }
 
-export default class Parallel<T = any> {
+export class Parallel<T = any> {
   private _tasks: any[] = [];
   private _errors: IDictionary<Error> = {};
   private _results: IDictionary = {};
@@ -46,12 +44,12 @@ export default class Parallel<T = any> {
   private _failureCallbacks: IParallelFailureNotification[] = [];
   private _successCallbacks: IParallelSuccessNotification[] = [];
 
-  public static create() {
-    const obj = new Parallel();
+  public static create(title?: string) {
+    const obj = new Parallel(title);
     return obj;
   }
 
-  constructor(private options: IDictionary = { throw: true }) {
+  constructor(public title?: string, private options: IDictionary = { throw: true }) {
     if (options.throw === undefined) {
       options.throw = true;
     }
@@ -134,7 +132,11 @@ export default class Parallel<T = any> {
    */
   public async isDone() {
     this.startDelayedTasks();
-    await Promise.all(this._tasks);
+    try {
+      await Promise.all(this._tasks);
+    } catch (e) {
+      throw e;
+    }
     const hadErrors = this._failed.length > 0 ? true : false;
     if (hadErrors) {
       throw new ParallelError(this);
