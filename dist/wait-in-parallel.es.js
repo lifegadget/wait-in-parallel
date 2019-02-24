@@ -60,11 +60,11 @@ class ParallelError extends Error {
             };
             return errors[f].name === "ParallelError"
                 ? `\n  - ${f} [ParallelError { ${inspect(errors[f])} }]`
-                : `\n  - ${f} [${errors[f].code ? errors[f].code : errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
+                : `\n  - ${f} [${errors[f].code ? `${errors[f].name}:${errors[f].code}` : errors[f].name} ${getFirstErrorLocation(errors[f].stack)}]`;
         })
             .join(", ");
         this.message = `${context.title ? context.title + ": " : ""}${context._get("failed").length} of ${failed.length +
-            successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.`;
+            successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}.\n\nFirst error message was: ${errors[0].message}`;
         this.errors = errors;
         this.failed = failed;
         this.successful = successful;
