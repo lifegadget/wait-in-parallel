@@ -82,7 +82,8 @@ export class ParallelError<T = any> extends Error {
       successful.length} parallel tasks failed.\nTasks failing were: ${errorSummary}."`;
     this.message +=
       Object.keys(errors).length > 0
-        ? `\n\nFirst error message was: ${(this, errors[firstKey(errors)].message)}`
+        ? `\n\nFirst error message was: ${(this, errors[firstKey(errors)].message)}` +
+          `\n\nStack trace for first error is:\n${errors[firstKey(errors)].stack}`
         : "";
     this.errors = errors;
     this.failed = failed;
