@@ -145,7 +145,7 @@ describe("Basics →", () => {
       console.log(e);
 
       expect(e.message).to.include("fail1 [FictitiousError @");
-      expect(e.message).to.include("fail4 [ParallelError { f3");
+      expect(e.message).to.include("fail4 [ParallelError Nested Errors");
     }
   });
 });
