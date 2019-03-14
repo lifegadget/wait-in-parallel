@@ -1,6 +1,6 @@
 {
   "name": "wait-in-parallel",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "wait-in-parallel",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/wait-in-parallel",
@@ -72,7 +72,7 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "common-types": "^1.9.6s",
+    "common-types": "^1.9.6",
     "lodash.first": "^3.0.0",
     "typed-conversions": "^0.7.4"
   },
